@@ -16,7 +16,7 @@
             overflow-x: hidden;
         }
 
-        /* Animation de dégradé pour les titres */
+        /* Animation de dégradé pour les titres (rouge et bleu uniquement) */
         @keyframes gradientShift {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -24,12 +24,12 @@
         }
 
         .gradient-text {
-            background: linear-gradient(90deg, #ec4899, #8b5cf6, #3b82f6, #06b6d4, #ec4899, #8b5cf6);
+            background: linear-gradient(90deg, #ec4899, #3b82f6, #ec4899, #3b82f6);
             background-size: 300% 300%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: gradientShift 4s ease infinite;
+            animation: gradientShift 3s ease infinite;
         }
 
         /* Arrière-plan animé avec cercles */
@@ -57,20 +57,20 @@
         }
 
         .animated-bg::before {
-            width: 600px;
-            height: 600px;
+            width: 800px;
+            height: 800px;
             background: radial-gradient(circle, #dc2626 0%, transparent 70%);
-            top: -200px;
-            right: -100px;
+            top: -300px;
+            right: -200px;
             animation: moveBackground 15s ease-in-out infinite;
         }
 
         .animated-bg::after {
-            width: 500px;
-            height: 500px;
+            width: 700px;
+            height: 700px;
             background: radial-gradient(circle, #1e3a8a 0%, transparent 70%);
-            bottom: -150px;
-            left: -100px;
+            bottom: -250px;
+            left: -200px;
             animation: moveBackground 20s ease-in-out infinite reverse;
         }
 
@@ -83,18 +83,22 @@
 
         .page.active {
             display: flex;
-            animation: slideUp 0.5s ease-out;
         }
 
-        @keyframes slideUp {
+        /* Animation pour les contenus */
+        @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(30px);
+                transform: translateY(20px);
             }
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
+        }
+
+        .animate-content {
+            animation: fadeInUp 0.6s ease-out;
         }
 
         /* Page d'accueil */
@@ -148,10 +152,6 @@
             font-weight: 900;
             margin-bottom: 16px;
             line-height: 1.1;
-        }
-
-        .text-purple {
-            color: #d8b4fe;
         }
 
         .home-subtitle {
@@ -212,7 +212,7 @@
         }
 
         .btn-home {
-            padding: 8px;
+            padding: 12px;
             background: transparent;
             border: none;
             color: white;
@@ -239,30 +239,21 @@
             margin-bottom: 4px;
         }
 
-        .game-title .pink {
-            color: #ec4899;
-        }
-
-        .game-title .gray {
-            color: #9ca3af;
-        }
-
-        .game-title .cyan {
-            color: #22d3ee;
-        }
-
         .game-title p {
             color: #9ca3af;
             font-size: 0.875rem;
         }
 
         .questions-card {
-            background: linear-gradient(135deg, rgba(31, 41, 55, 0.6), rgba(17, 24, 39, 0.6));
-            backdrop-filter: blur(12px);
+            background: linear-gradient(145deg, rgba(31, 41, 55, 0.7), rgba(17, 24, 39, 0.7));
+            backdrop-filter: blur(16px);
             border-radius: 24px;
-            border: 1px solid rgba(75, 85, 99, 0.5);
             overflow: hidden;
             margin-bottom: 32px;
+            box-shadow: 
+                0 10px 40px -10px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.05),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
 
         .question {
@@ -311,7 +302,7 @@
 
         .btn-flip {
             width: 100%;
-            background: linear-gradient(90deg, #be185d, #6b21a8, #1e3a8a);
+            background: linear-gradient(90deg, #ec4899, #22d3ee);
             color: white;
             padding: 18px 32px;
             border-radius: 12px;
@@ -329,7 +320,7 @@
         }
 
         .btn-flip:hover {
-            background: linear-gradient(90deg, #9f1239, #581c87, #1e3a8a);
+            background: linear-gradient(90deg, #db2777, #06b6d4);
             transform: scale(1.05);
         }
 
@@ -397,6 +388,13 @@
             justify-content: center;
         }
 
+        /* Animation de la pièce qui tourne */
+        @keyframes flipCoin {
+            0% { transform: rotateY(0deg) scale(1); }
+            50% { transform: rotateY(1800deg) scale(1.2); }
+            100% { transform: rotateY(3600deg) scale(1); }
+        }
+
         .coin-result {
             width: 256px;
             height: 256px;
@@ -407,7 +405,7 @@
             color: white;
             font-size: 4rem;
             font-weight: bold;
-            animation: pulse 1s ease-in-out;
+            animation: flipCoin 1.5s ease-in-out;
         }
 
         .coin-result.pile {
@@ -417,11 +415,6 @@
         .coin-result.face {
             background: linear-gradient(135deg, #22d3ee, #06b6d4);
             border: 8px solid #ec4899;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
         }
 
         /* Notification */
@@ -470,6 +463,11 @@
             background: #22d3ee;
         }
 
+        .notification-icon.drink {
+            background: #f59e0b;
+            font-size: 1.2rem;
+        }
+
         .notification p {
             color: white;
             font-size: 0.875rem;
@@ -508,11 +506,9 @@
         <div class="icon-decoration top-left">🎲</div>
         <div class="icon-decoration bottom-right">🍻</div>
 
-        <div class="home-content">
+        <div class="home-content animate-content">
             <h1 class="home-title">
-                <span class="gradient-text">PARLE</span>
-                <span class="text-purple"> OU</span><br>
-                <span class="gradient-text">BOIS</span>
+                <span class="gradient-text">PARLE <span class="gradient-text">OU</span> BOIS</span>
             </h1>
             
             <p class="home-subtitle">Édition Pile ou Face</p>
@@ -526,7 +522,7 @@
             </button>
             
             <p class="home-footer">
-                Lance la pièce, réponds à la question... ou bois ! 
+                Lance la pièce, réponds à la question... ou bois ! 🍻
             </p>
         </div>
     </div>
@@ -535,9 +531,9 @@
     <div id="gamePage" class="page">
         <div class="animated-bg"></div>
         <div class="game-container">
-            <div class="game-header">
+            <div class="game-header animate-content">
                 <button class="btn-home" onclick="goHome()">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
                         <polyline points="9 22 9 12 15 12 15 22"/>
                     </svg>
@@ -545,17 +541,15 @@
                 
                 <div class="game-title">
                     <h1>
-                        <span class="gradient-text">Parle</span>
-                        <span class="gray"> ou </span>
-                        <span class="gradient-text">Bois</span>
+                        <span class="gradient-text">Parle <span class="gradient-text">ou</span> Bois</span>
                     </h1>
                     <p>Carte #<span id="cardNumber">1</span></p>
                 </div>
                 
-                <div style="width: 40px;"></div>
+                <div style="width: 52px;"></div>
             </div>
 
-            <div class="questions-card">
+            <div class="questions-card animate-content" style="animation-delay: 0.1s">
                 <div class="question" id="questionRouge">
                     <div class="question-dot rouge"></div>
                     <p id="textRouge"></p>
@@ -567,7 +561,7 @@
                 </div>
             </div>
 
-            <button class="btn-flip" id="btnFlip" onclick="flipCoin()">
+            <button class="btn-flip animate-content" style="animation-delay: 0.2s" id="btnFlip" onclick="flipCoin()">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <circle cx="12" cy="12" r="10"/>
                     <circle cx="12" cy="12" r="6"/>
@@ -575,7 +569,7 @@
                 <span id="btnFlipText">Lancer la pièce</span>
             </button>
 
-            <div class="buttons-grid">
+            <div class="buttons-grid animate-content" style="animation-delay: 0.3s">
                 <button class="btn-secondary" onclick="newCard()">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <polyline points="23 4 23 10 17 10"/>
@@ -585,7 +579,7 @@
                     Nouvelle carte
                 </button>
 
-                <button class="btn-secondary btn-drink">
+                <button class="btn-secondary btn-drink" onclick="drinkAction()">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <polyline points="3 6 5 6 21 6"/>
                         <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
@@ -620,12 +614,25 @@
             ]
         };
 
+        const drinkPhrases = [
+            "Cul sec ! 🍺",
+            "À fond ! 🍻",
+            "Santé ! 🥂",
+            "Tchin-tchin ! 🍷",
+            "Allez hop ! 🍾",
+            "Descends-moi ça ! 🥃"
+        ];
+
         let currentCard = 1;
         let selectedColor = null;
 
         function getRandomQuestion(type) {
             const list = questions[type];
             return list[Math.floor(Math.random() * list.length)];
+        }
+
+        function getRandomDrinkPhrase() {
+            return drinkPhrases[Math.floor(Math.random() * drinkPhrases.length)];
         }
 
         function showPage(pageId) {
@@ -652,6 +659,21 @@
             document.getElementById('questionRouge').classList.remove('selected-rouge');
             document.getElementById('questionBleue').classList.remove('selected-bleue');
             selectedColor = null;
+        }
+
+        function drinkAction() {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notificationText');
+            const icon = notification.querySelector('.notification-icon');
+            
+            icon.className = 'notification-icon drink';
+            icon.innerHTML = '🍻';
+            notificationText.textContent = getRandomDrinkPhrase();
+            notification.classList.add('show');
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 2000);
         }
 
         function flipCoin() {
@@ -697,8 +719,9 @@
             const notificationText = document.getElementById('notificationText');
             const icon = notification.querySelector('.notification-icon');
             
-            notificationText.textContent = text;
             icon.className = 'notification-icon ' + color;
+            icon.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
+            notificationText.textContent = text;
             notification.classList.add('show');
 
             setTimeout(() => {
