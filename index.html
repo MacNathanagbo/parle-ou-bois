@@ -1,3 +1,4 @@
+<!-- ...existing code... -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -88,7 +89,8 @@
             display: none;
             padding: 24px;
             position: relative;
-            background: linear-gradient(135deg, #1e1b4b 0%, #1f2937 50%, #1e1b4b 100%);
+            /* Arrière-plan sombre bleu + rouge */
+            background: linear-gradient(135deg, #0b1220 0%, #1e1b4b 40%, #2a0f1a 100%);
         }
 
         .page.active {
@@ -253,6 +255,34 @@
             font-size: 0.875rem;
         }
 
+        /* Info button (moved to header) */
+        .btn-info {
+            padding: 10px;
+            background: transparent;
+            border: none;
+            color: white;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background 0.3s;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-info:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-info:active {
+            transform: scale(0.95);
+        }
+
+        .btn-info svg {
+            width: 20px;
+            height: 20px;
+        }
+
         .questions-card {
             background: linear-gradient(145deg, rgba(31, 41, 55, 0.7), rgba(17, 24, 39, 0.7));
             backdrop-filter: blur(16px);
@@ -394,6 +424,8 @@
         #resultPage {
             align-items: center;
             justify-content: center;
+            /* perspective nécessaire pour voir les deux faces pendant la rotation */
+            perspective: 1000px;
         }
 
         /* Animation de la pièce qui tourne en 3D */
@@ -435,6 +467,7 @@
                 0 15px 50px rgba(0, 0, 0, 0.4),
                 inset 0 -5px 20px rgba(0, 0, 0, 0.3),
                 inset 0 5px 20px rgba(255, 255, 255, 0.2);
+            backface-visibility: hidden;
         }
 
         .coin-result.spinning {
@@ -452,7 +485,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            backface-visibility: visible;
+            transform: rotateY(0deg);
+            backface-visibility: hidden;
             box-shadow: 
                 0 15px 50px rgba(236, 72, 153, 0.4),
                 inset 0 -5px 20px rgba(0, 0, 0, 0.3),
@@ -471,7 +505,7 @@
             align-items: center;
             justify-content: center;
             transform: rotateY(180deg);
-            backface-visibility: visible;
+            backface-visibility: hidden;
             box-shadow: 
                 0 15px 50px rgba(34, 211, 238, 0.4),
                 inset 0 -5px 20px rgba(0, 0, 0, 0.3),
@@ -543,37 +577,6 @@
             color: white;
             font-size: 0.875rem;
             font-weight: 600;
-        }
-
-        /* Bouton info */
-        .btn-info {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            padding: 10px;
-            background: transparent;
-            border: none;
-            color: white;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: background 0.3s;
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .btn-info:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .btn-info:active {
-            transform: scale(0.95);
-        }
-
-        .btn-info svg {
-            width: 20px;
-            height: 20px;
         }
 
         /* Modal d'information */
@@ -781,7 +784,14 @@
                     <p>Carte #<span id="cardNumber">1</span></p>
                 </div>
                 
-                <div style="width: 52px;"></div>
+                <!-- bouton info déplacé ici, en parallèle au bouton home -->
+                <button class="btn-info" onclick="toggleInfo()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                        <circle cx="12" cy="12" r="9"/>
+                        <path d="M12 8h.01"/>
+                        <path d="M11 12h1v4h1"/>
+                    </svg>
+                </button>
             </div>
 
             <div class="questions-card animate-content" style="animation-delay: 0.1s">
@@ -823,15 +833,6 @@
                 </button>
             </div>
         </div>
-
-        <!-- Bouton info -->
-        <button class="btn-info" onclick="toggleInfo()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-                <circle cx="12" cy="12" r="9"/>
-                <path d="M12 8h.01"/>
-                <path d="M11 12h1v4h1"/>
-            </svg>
-        </button>
     </div>
 
     <!-- Page résultat -->
@@ -888,169 +889,217 @@
         </div>
     </div>
 
-    <script>
-        const questions = {
-            rouge: [
-                "Quelle est ta plus grosse honte sexuelle ?",
-                "Quel est ton plus gros secret ?",
-                "As-tu déjà trompé quelqu'un ?",
-                "Quelle est la chose la plus embarrassante que tu aies faite en soirée ?",
-                "As-tu déjà menti à ton/ta partenaire ?",
-            ],
-            bleue: [
-                "Quelle est ta saison préférée et pourquoi ?",
-                "Si tu pouvais vivre une journée dans la peau de quelqu'un, qui serait-ce ?",
-                "As-tu déjà fait semblant de ne pas connaître quelqu'un pour éviter une conversation ?",
-                "Quel est ton rêve le plus fou ?",
-                "Si tu pouvais voyager dans le temps, irais-tu dans le passé ou le futur ?",
-            ]
+   <script>
+    const questions = {
+        rouge: [
+            "As-tu déjà menti pour éviter un rencard ?",
+            "Si tu devais supprimer une personne ici du groupe, qui ce serait ?",
+            "As-tu déjà stalké l'ex de ton/ta partenaire ?",
+            "Quel est ton pire rencard ?",
+            "Quel est le truc le plus honteux que tu aies fait pour de l'argent ?",
+            "As-tu déjà eu une aventure avec quelqu'un en couple ?",
+            "Cite le nom de ton crush actuel.",
+            "Quelle est ta pire habitude au lit ?",
+            "As-tu déjà simulé pendant un moment intime ?",
+            "Dis combien de partenaires tu as eus au total.",
+            "As-tu déjà menti à un ami proche ici ?",
+            "Quel est ton plus gros complexe physique ?",
+            "Ton dernier message supprimé... c'était quoi ?",
+            "Qui dans ce groupe tu ne fais pas confiance ?",
+            "As-tu déjà utilisé un faux compte pour surveiller quelqu'un ?",
+            "Quel est ton fétiche le plus bizarre ?",
+            "Quel est le surnom que tu donnes en secret à quelqu'un ici ?",
+            "Quelle est ta pire honte sexuelle ?",
+            "As-tu déjà eu une MST ou pensé en avoir une ?",
+            "Quel est ton classement des plus beaux dans cette pièce ?",
+            "As-tu déjà embrassé quelqu'un ici ?",
+            "À quand remonte ta dernière fois ?",
+            "Donne le prénom de ton pire coup au lit.",
+            "As-tu déjà eu un plan à 3 en tête ?",
+            "As-tu déjà simulé une crise pour éviter quelque chose ?",
+            "Quel est le rêve le plus bizarre que tu aies fait ?",
+            "Si tu pouvais embrasser quelqu'un ici maintenant, ce serait qui ?",
+            "As-tu déjà envoyé une nude à la mauvaise personne ?",
+            "Quel est ton message non lu qui date le plus ?",
+            "Si tu devais noter tes talents au lit sur 10, tu mets combien ?"
+        ],
+        bleue: [
+            "Quel est le plus gros mensonge que tu as dit à un ami ?",
+            "Quel secret sur toi personne ici ne connaît ?",
+            "As-tu déjà été attiré(e) par quelqu'un ici ?",
+            "Ton dernier message à caractère coquin ?",
+            "As-tu déjà triché dans une relation ?",
+            "As-tu déjà fait quelque chose de sexuel dans un lieu public ?",
+            "Envoie un message \"Je pense à toi\" à ton ex maintenant.",
+            "As-tu déjà regardé du contenu X cette semaine ? Si oui, quand ?",
+            "Si tu devais coucher avec quelqu'un ici, qui choisirais-tu ?",
+            "Montre la dernière photo de ta galerie à tout le monde.",
+            "Quel est le secret que tu n'as jamais dit à personne ?",
+            "As-tu déjà été infidèle ?",
+            "As-tu déjà espionné le téléphone de ton partenaire ?",
+            "As-tu déjà été attiré par un membre de ta famille éloignée ?",
+            "Quelle est la chose la plus illégale que tu aies faite ?",
+            "As-tu déjà eu une relation d'un soir ?",
+            "Quel est ton plus grand fantasme ?",
+            "As-tu déjà dragué quelqu'un juste pour le fun ?",
+            "Quel est le mensonge le plus fou que tu aies raconté pour séduire ?",
+            "As-tu déjà menti sur ton nombre de partenaires ?",
+            "As-tu déjà voulu tromper mais tu t'es retenu ?",
+            "As-tu déjà fait une sextape ?",
+            "Quelle est ta position préférée (en 3 mots) ?",
+            "As-tu déjà couché sans protection ?",
+            "Cite 3 personnes ici avec qui tu pourrais flirter.",
+            "As-tu déjà utilisé un objet du quotidien comme jouet ?",
+            "As-tu déjà été rejeté méchamment ?",
+            "As-tu déjà volé quelque chose ?",
+            "As-tu déjà inventé une excuse pour éviter un rencard ?",
+            "Tu préfères 1 min avec ton crush ou 1h avec ton ex ?"
+        ]
+    };
+
+    const drinkPhrases = [
+        "Cul sec ! ",
+        "À fond ! ",
+        "Santé ! ",
+        "Tchin-tchin ! ",
+        "Allez hop ! ",
+        "Descends-moi ça ! "
+    ];
+
+    let currentCard = 1;
+    let selectedColor = null;
+    let currentPairIndex = null;
+
+    function getQuestionPair() {
+        if (currentPairIndex === null) {
+            currentPairIndex = Math.floor(Math.random() * questions.rouge.length);
+        }
+        return {
+            rouge: questions.rouge[currentPairIndex],
+            bleue: questions.bleue[currentPairIndex]
         };
+    }
 
-        const drinkPhrases = [
-            "Cul sec ! ",
-            "À fond ! ",
-            "Santé ! ",
-            "Tchin-tchin ! ",
-            "Allez hop ! ",
-            "Descends-moi ça ! "
-        ];
+    function newCard() {
+        currentPairIndex = null;
+        const pair = getQuestionPair();
+        document.getElementById('textRouge').textContent = pair.rouge;
+        document.getElementById('textBleue').textContent = pair.bleue;
+        document.getElementById('cardNumber').textContent = currentCard;
+        
+        document.getElementById('questionRouge').classList.remove('selected-rouge');
+        document.getElementById('questionBleue').classList.remove('selected-bleue');
+        selectedColor = null;
+    }
 
-        let currentCard = 1;
-        let selectedColor = null;
+    function drinkAction() {
+        const notification = document.getElementById('notification');
+        const notificationText = document.getElementById('notificationText');
+        const icon = notification.querySelector('.notification-icon');
+        
+        icon.className = 'notification-icon drink';
+        icon.innerHTML = '🍻';
+        notificationText.textContent = getRandomDrinkPhrase();
+        notification.classList.add('show');
 
-        function getRandomQuestion(type) {
-            const list = questions[type];
-            return list[Math.floor(Math.random() * list.length)];
-        }
+        setTimeout(() => {
+            notification.classList.remove('show');
+        }, 2000);
+    }
 
-        function getRandomDrinkPhrase() {
-            return drinkPhrases[Math.floor(Math.random() * drinkPhrases.length)];
-        }
+    function getTrulyRandomResult() {
+        const timestamp = Date.now();
+        const random1 = Math.random();
+        const random2 = Math.random();
+        const random3 = Math.random();
+        
+        const combined = (timestamp * random1 + random2 * 1000 + random3 * 500) % 1;
+        return combined < 0.5 ? 'PILE' : 'FACE';
+    }
 
-        // Générateur aléatoire vraiment imprévisible
-        function getTrulyRandomResult() {
-            const timestamp = Date.now();
-            const random1 = Math.random();
-            const random2 = Math.random();
-            const random3 = Math.random();
+    function showPage(pageId) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+    }
+
+    function startGame() {
+        newCard();
+        showPage('gamePage');
+    }
+
+    function goHome() {
+        currentCard = 1;
+        selectedColor = null;
+        showPage('homePage');
+    }
+
+    function flipCoin() {
+        const btn = document.getElementById('btnFlip');
+        const btnText = document.getElementById('btnFlipText');
+        
+        btn.disabled = true;
+        btn.classList.add('spinning');
+        btnText.textContent = 'Lancement...';
+
+        showPage('resultPage');
+        
+        const coinDisplay = document.getElementById('coinDisplay');
+        coinDisplay.textContent = '';
+        coinDisplay.className = 'coin-result spinning';
+
+        setTimeout(() => {
+            const result = getTrulyRandomResult();
             
-            // Combine plusieurs sources d'aléatoire
-            const combined = (timestamp * random1 + random2 * 1000 + random3 * 500) % 1;
-            return combined < 0.5 ? 'PILE' : 'FACE';
-        }
-
-        function showPage(pageId) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-        }
-
-        function startGame() {
-            newCard();
-            showPage('gamePage');
-        }
-
-        function goHome() {
-            currentCard = 1;
-            selectedColor = null;
-            showPage('homePage');
-        }
-
-        function newCard() {
-            document.getElementById('textRouge').textContent = getRandomQuestion('rouge');
-            document.getElementById('textBleue').textContent = getRandomQuestion('bleue');
-            document.getElementById('cardNumber').textContent = currentCard;
-            
-            document.getElementById('questionRouge').classList.remove('selected-rouge');
-            document.getElementById('questionBleue').classList.remove('selected-bleue');
-            selectedColor = null;
-        }
-
-        function drinkAction() {
-            const notification = document.getElementById('notification');
-            const notificationText = document.getElementById('notificationText');
-            const icon = notification.querySelector('.notification-icon');
-            
-            icon.className = 'notification-icon drink';
-            icon.innerHTML = '🍻';
-            notificationText.textContent = getRandomDrinkPhrase();
-            notification.classList.add('show');
+            coinDisplay.textContent = result;
+            coinDisplay.className = 'coin-result ' + (result === 'PILE' ? 'pile' : 'face');
 
             setTimeout(() => {
-                notification.classList.remove('show');
-            }, 2000);
-        }
-
-        function flipCoin() {
-            const btn = document.getElementById('btnFlip');
-            const btnText = document.getElementById('btnFlipText');
-            
-            btn.disabled = true;
-            btn.classList.add('spinning');
-            btnText.textContent = 'Lancement...';
-
-            // Afficher la page de résultat avec une pièce neutre
-            showPage('resultPage');
-            
-            const coinDisplay = document.getElementById('coinDisplay');
-            coinDisplay.textContent = '';
-            coinDisplay.className = 'coin-result spinning';
-
-            // Faire tourner la pièce pendant 2 secondes
-            setTimeout(() => {
-                // Générer le résultat APRÈS la rotation
-                const result = getTrulyRandomResult();
+                selectedColor = result === 'PILE' ? 'rouge' : 'bleue';
                 
-                // Arrêter l'animation de rotation et afficher le résultat
-                coinDisplay.textContent = result;
-                coinDisplay.className = 'coin-result ' + (result === 'PILE' ? 'pile' : 'face');
+                if (selectedColor === 'rouge') {
+                    document.getElementById('questionRouge').classList.add('selected-rouge');
+                } else {
+                    document.getElementById('questionBleue').classList.add('selected-bleue');
+                }
 
-                // Attendre un peu pour montrer le résultat avant de retourner
-                setTimeout(() => {
-                    selectedColor = result === 'PILE' ? 'rouge' : 'bleue';
-                    
-                    if (selectedColor === 'rouge') {
-                        document.getElementById('questionRouge').classList.add('selected-rouge');
-                    } else {
-                        document.getElementById('questionBleue').classList.add('selected-bleue');
-                    }
+                showPage('gamePage');
+                showNotification(result === 'PILE' ? 'Pile ! Question Rouge' : 'Face ! Question Bleue', selectedColor);
+                
+                btn.disabled = false;
+                btn.classList.remove('spinning');
+                btnText.textContent = 'Lancer la pièce';
+                currentCard++;
+                document.getElementById('cardNumber').textContent = currentCard;
+            }, 1000);
+        }, 2000);
+    }
 
-                    showPage('gamePage');
-                    showNotification(result === 'PILE' ? 'Pile ! Question Rouge' : 'Face ! Question Bleue', selectedColor);
-                    
-                    btn.disabled = false;
-                    btn.classList.remove('spinning');
-                    btnText.textContent = 'Lancer la pièce';
-                    currentCard++;
-                    document.getElementById('cardNumber').textContent = currentCard;
-                }, 1000);
-            }, 2000);
+    function showNotification(text, color) {
+        const notification = document.getElementById('notification');
+        const notificationText = document.getElementById('notificationText');
+        const icon = notification.querySelector('.notification-icon');
+        
+        icon.className = 'notification-icon ' + color;
+        icon.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
+        notificationText.textContent = text;
+        notification.classList.add('show');
+
+        setTimeout(() => {
+            notification.classList.remove('show');
+        }, 2000);
+    }
+
+    function toggleInfo() {
+        const modal = document.getElementById('infoModal');
+        modal.classList.toggle('show');
+    }
+
+    function closeInfoIfClickOutside(event) {
+        if (event.target.id === 'infoModal') {
+            toggleInfo();
         }
-
-        function showNotification(text, color) {
-            const notification = document.getElementById('notification');
-            const notificationText = document.getElementById('notificationText');
-            const icon = notification.querySelector('.notification-icon');
-            
-            icon.className = 'notification-icon ' + color;
-            icon.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
-            notificationText.textContent = text;
-            notification.classList.add('show');
-
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 2000);
-        }
-
-        function toggleInfo() {
-            const modal = document.getElementById('infoModal');
-            modal.classList.toggle('show');
-        }
-
-        function closeInfoIfClickOutside(event) {
-            if (event.target.id === 'infoModal') {
-                toggleInfo();
-            }
-        }
-    </script>
+    }
+</script>
 </body>
 </html>
+<!-- ...existing code... -->
